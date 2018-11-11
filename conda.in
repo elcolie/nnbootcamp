@@ -1,5 +1,5 @@
-pytorch
-torchvision
+pytorch::pytorch
+pytorch::torchvision
 jupyter
 gensim
 numpy
