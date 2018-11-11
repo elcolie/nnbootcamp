@@ -1,6 +1,6 @@
-jupyter
-torch
+pytorch
 torchvision
+jupyter
 gensim
 numpy
 matplotlib
