@@ -3,7 +3,12 @@ Practical Recurrent Networks in PyTorch
 https://www.udemy.com/the-complete-neural-networks-bootcamp-theory-applications/learn/v4/t/lecture/11288834?start=0
 """
 import torch
+import torch.nn as nn
 
+
+# import os
+# import numpy as np
+# from torch.nn.utils import clip_grad_norm
 
 class Dictionary:
     def __init__(self):
@@ -49,3 +54,19 @@ class TextProcess:
         # return (batch_size, num_batches)
         rep_tensor = rep_tensor.view(batch_size, -1)
         return rep_tensor
+
+
+class TextGenerator(nn.Module):
+    def __init__(self, vocab_size: int, embed_size: int, hidden_size: int, num_layers: int):
+        super().__init__()
+        self.embed = nn.Embedding(vocab_size, embed_size)
+        self.lstm = nn.LSTM(embed_size, hidden_size, num_layers, batch_first=True)
+        self.linear = nn.Linear(hidden_size, vocab_size)
+
+    def forward(self, x, h):
+        # Perform Word Embedding
+        x = self.embed(x)
+        out, (h, c) = self.lstm(x, h)
+        out = out.reshape(out.size(0) * out.size(1), out.size(2))
+        out = self.linear(out)
+        return out, (h, c)
